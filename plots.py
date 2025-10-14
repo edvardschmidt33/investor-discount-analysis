@@ -46,6 +46,13 @@ df['AVKASTNING'] =(df['PRIS'].shift(-200) - df['PRIS']) / df['PRIS']
 
 df['AVKASTNING - OMXS'] = df['AVKASTNING'] - df['Avkastning OMXS#=']*0.01
 
+df['AVKASTNING'] = (
+    df['AVKASTNING']
+    .astype(str)
+    .str.replace(',', '.', regex=False)   # convert commas to dots
+    .str.replace(' ', '', regex=False)    # remove spaces
+    .pipe(pd.to_numeric, errors='coerce') # convert to float safely
+)
 
 ### CORRELATION PLOTS ###
 
@@ -66,15 +73,13 @@ plt.show()
 
 ### BOXPLOTS ###
 
-plt.boxplot(df['AVKASTNING'])
+
+df = df.dropna(subset=['AVKASTNING'])
+plt.boxplot([df['AVKASTNING'], df['Avkastning OMXS#=']*0.01], labels=[f'Return rate {STOCK}', f'Return rate OMXS'])
 plt.title(f'Return rate boxplot for {STOCK}')
+plt.ylabel('Return rate (%)')
+# plt.grid(True)
 plt.show()
-
-plt.show()
-plt.boxplot(df['AVKASTNING - OMXS'])
-plt.title(f'Adjusted return rate boxplot for {STOCK}')
-plt.show()
-
 
 plt.boxplot(df['RABATT/PREMIE'])
 plt.title(f'Discount/premium boxplot for {STOCK}')
@@ -95,4 +100,9 @@ plt.show()
 plt.plot(df['Investor Date'], df['RABATT/PREMIE'])
 plt.xlabel('Date')
 plt.ylabel('Discount/Premium')
+plt.show()
+
+plt.plot(df['Investor Date'], df['AVKASTNING'], label= f'{STOCK} return rate')
+plt.plot(df['Investor Date'], df['Avkastning OMXS#=']*0.01, label= f'OMXSreturn rate')
+plt.legend()
 plt.show()
