@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def RSI_n(prices: pd.Series,n: int = 14, ema: bool = False) -> pd.Series:
+def RSI_n(prices: pd.Series, n: int = 14, ema: bool = False) -> pd.Series:
    """
    Relative Strength Index (RSI) calculated with a period of 'n'
    Using the formula RSI = 100 - 100 / (100 + RS)
@@ -33,7 +33,13 @@ def RSI_n(prices: pd.Series,n: int = 14, ema: bool = False) -> pd.Series:
 
 def main(STOCK: str = 'Investor', filepath: str = "data/Investor.csv", all_plots: bool = True):
 
-    STOCK = 'Investor'
+    """
+    Main function of plot generation.
+    Plots relevant plots with data from the stock file.
+
+    Calculates Discount/Premium, RSI and Return rate
+    """
+
 
     exclude_cols = ['Rabatt/Premie', 'Genomsnittsrabatt senaste 100 handelsdagarna', 'Nuvarande rabatt minus snitt', 'Avkastning 200 handelsdagar', 'OMX Date']
     numeric_cols = ['PRIS', 'SUBSTANSVÄRDE', 'BERÄKNAT_SUBSTANSVÄRDE', 'Index Value', 'Avkastning OMXS#=']
