@@ -143,4 +143,7 @@ def main(STOCK: str = 'Investor', filepath: str = "data/Investor.csv", all_plots
 
 
 if __name__ ==  '__main__':
-   main('Investor', 'data/Investor.csv')
+
+#    main('Investor', 'data/Investor.csv')
+   
+   main('Industrivärlden', 'data/Industrivarden_vanlig2.csv')
