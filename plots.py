@@ -42,14 +42,15 @@ def main(STOCK: str = 'Investor', filepath: str = "data/Investor.csv", all_plots
 
 
     exclude_cols = ['Rabatt/Premie', 'Genomsnittsrabatt senaste 100 handelsdagarna', 'Nuvarande rabatt minus snitt', 'Avkastning 200 handelsdagar', 'OMX Date']
-    numeric_cols = ['PRIS', 'SUBSTANSVÄRDE', 'BERÄKNAT_SUBSTANSVÄRDE', 'Index Value', 'Avkastning OMXS#=']
+    numeric_cols = ['PRIS', 'BERÄKNAT_SUBSTANSVÄRDE', 'Index Value', 'Avkastning OMXS#=']
     df = pd.read_csv(filepath, usecols=lambda col: col not in exclude_cols)
 
 
     for col in numeric_cols:
         df[col] = (
                 df[col]
-                .astype(str)                 # make sure it's a string
+                .astype(str)
+                .str.replace('  ', '', regex= False)                                  # make sure it's a string
                 .str.replace(' ', '', regex=False)  # remove spaces inside numbers
                 .str.replace(',', '.', regex=False)
                 .str.replace('%', '', regex=False) # replace decimal commas with dots
