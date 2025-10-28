@@ -31,7 +31,9 @@ def presentation(file: str = 'Investor_preprocess.csv', STOCK: str = 'Investor')
     plt.xlabel('Discount/Premium')
     plt.ylabel('Return rate adjusted for OMXS')
     plt.title(f'Discount/Premium vs Adjusted Return Rate for {STOCK}')
+    plt.savefig(f'figs/discount_vs_return_{STOCK}.png', dpi=300, bbox_inches='tight')
     plt.show()
+    
 
     corr = df['DISCOUNT/PREMIUM'].corr(df['RETURN - OMXS'])
     print(f'--Correlation for {STOCK}--')
