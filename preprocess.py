@@ -18,7 +18,7 @@ def preprocess(file:str = 'Investor.csv'):
     """
 
     filepath = os.path.join('data', file)
-    exclude_cols = ['Rabatt/Premie', 'Genomsnittsrabatt senaste 100 handelsdagarna', 'Nuvarande rabatt minus snitt', 'Avkastning 200 handelsdagar', 'OMX Date']
+    exclude_cols = ['Rabatt/Premie', 'Genomsnittsrabatt senaste 100 handelsdagarna', 'Nuvarande rabatt minus snitt', 'Avkastning 200 handelsdagar', 'OMX Date', 'SUBSTANSVÄRDE']
     numeric_cols = ['PRIS', 'BERÄKNAT_SUBSTANSVÄRDE', 'Index Value', 'Avkastning OMXS#=']
     df = pd.read_csv(filepath, usecols=lambda col: col not in exclude_cols)
 
