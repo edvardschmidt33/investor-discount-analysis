@@ -73,10 +73,11 @@ def preprocess(file:str = 'Investor.csv'):
     'Avkastning OMXS#=': 'RETURN_OMXS',
     'Investor Date': 'DATE'
 })
+    directory = os.path.dirname(filepath)  # 'data'
     base, ext = os.path.splitext(file)
 
     # Create the new filename
-    save_path = f"{base}_preprocess{ext}"
+    save_path = os.path.join(directory, f"{base}_preprocess{ext}")
 
     return df.to_csv(save_path, index=False, encoding='utf-8')
 
