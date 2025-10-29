@@ -84,3 +84,4 @@ def preprocess(file:str = 'Investor.csv'):
 if __name__ == '__main__':
     preprocess('Investor.csv')
     preprocess('Industrivarden_vanlig2.csv')
+    preprocess('Latour.csv')

@@ -44,3 +44,4 @@ def presentation(file: str = 'Investor_preprocess.csv', STOCK: str = 'Investor')
 if __name__=='__main__':
     presentation('Investor_preprocess.csv', 'Investor')
     presentation('Industrivarden_vanlig2_preprocess.csv', 'Industrivärlden')
+    presentation('Latour_preprocess.csv', 'Latour')

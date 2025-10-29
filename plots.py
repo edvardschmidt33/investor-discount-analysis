@@ -148,8 +148,12 @@ if __name__ ==  '__main__':
 #    main('Investor', 'data/Investor.csv')
    
 #    main('Industrivärlden', 'data/Industrivarden_vanlig2.csv')
+    # df = pd.read_csv("data/Latour.csv")
 
-    df = pd.read_csv("data/Latour.csv", sep=";")
-    df.to_csv("data/Latour.csv", index=False)
+    # # Step 2. Rename one column (old_name → new_name)
+    # df = df.rename(columns={"DATUM": "Investor Date"})
 
-    # main('Latour', 'data/Latour.csv'
+    # # Step 3. Save the updated file
+    # df.to_csv("data/Latour.csv", index=False)
+
+    main('Latour', 'data/Latour.csv')
