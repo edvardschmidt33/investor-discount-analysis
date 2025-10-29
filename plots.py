@@ -147,4 +147,9 @@ if __name__ ==  '__main__':
 
 #    main('Investor', 'data/Investor.csv')
    
-   main('Industrivärlden', 'data/Industrivarden_vanlig2.csv')
+#    main('Industrivärlden', 'data/Industrivarden_vanlig2.csv')
+
+    df = pd.read_csv("data/Latour.csv", sep=";")
+    df.to_csv("data/Latour.csv", index=False)
+
+    # main('Latour', 'data/Latour.csv'
