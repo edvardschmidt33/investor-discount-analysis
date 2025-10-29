@@ -36,9 +36,6 @@ def preprocess(file:str = 'Investor.csv'):
 
 
     
-    cutoff_date = '2024-12-11'
-    df['Investor Date'] = pd.to_datetime(df['Investor Date'], errors='coerce')
-    df = df[df['Investor Date'] < cutoff_date]
 
     # Rabatt/premie: Ber.substansvärde / pris
 
@@ -54,6 +51,10 @@ def preprocess(file:str = 'Investor.csv'):
         .str.replace(' ', '', regex=False)    # remove spaces
         .pipe(pd.to_numeric, errors='coerce') # convert to float safely
     )
+
+    cutoff_date = '2024-12-11'
+    df['Investor Date'] = pd.to_datetime(df['Investor Date'], errors='coerce')
+    df = df[df['Investor Date'] < cutoff_date]
 
     df['DISCOUNT/PREMIUM_NORM'] =   (df['DISCOUNT/PREMIUM'] - df['DISCOUNT/PREMIUM'].min()) / (df['DISCOUNT/PREMIUM'].max() - df['DISCOUNT/PREMIUM'].min())
 
