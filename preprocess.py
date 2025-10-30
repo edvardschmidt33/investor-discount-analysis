@@ -8,7 +8,8 @@ def preprocess(file:str = 'Investor.csv'):
 
     """
     Implements preprocessing steps such as normalization, data integration and attribute name and language standardization
-    Feature Engineering: adding features "DISCOUNT/PREMIUM","DISCOUNT/PREMIUM_NORM" ,"RETURN", "RETURN - OMXS".
+    Feature Engineering: adding features "DISCOUNT/PREMIUM","DISCOUNT/PREMIUM_NORM" ,"RETURN", "RETURN - OMXS", "DAILY_RETURN", "VOL_30D", "SHARPE" 
+
     
     Args:
         file (str): Name of the file to be preprocessed
@@ -32,10 +33,7 @@ def preprocess(file:str = 'Investor.csv'):
                 .str.replace('%', '', regex=False) # replace decimal commas with dots
                 .pipe(pd.to_numeric, errors='coerce')  # safely convert to float
             )
-
-
-
-    
+   
 
     # Rabatt/premie: Ber.substansvärde / pris
 
@@ -43,6 +41,9 @@ def preprocess(file:str = 'Investor.csv'):
     df['DISCOUNT/PREMIUM'] = (df['BERÄKNAT_SUBSTANSVÄRDE'] - df['PRIS']) / df['PRIS']
     df['RETURN'] =(df['PRIS'].shift(-200) - df['PRIS']) / df['PRIS']
     df['RETURN - OMXS'] = df['RETURN'] - df['Avkastning OMXS#=']*0.01
+    
+    
+    df['DISCOUNT/PREMIUM_ADJ'] = (df['PRIS'] - df['BERÄKNAT_SUBSTANSVÄRDE']) / df['BERÄKNAT_SUBSTANSVÄRDE']
 
     df['RETURN'] = (
         df['RETURN']
@@ -59,12 +60,6 @@ def preprocess(file:str = 'Investor.csv'):
     df['DISCOUNT/PREMIUM_NORM'] =   (df['DISCOUNT/PREMIUM'] - df['DISCOUNT/PREMIUM'].min()) / (df['DISCOUNT/PREMIUM'].max() - df['DISCOUNT/PREMIUM'].min())
 
     ### Standadize naming system, switch to English
-    # df['SUBSTANSVÄRDE'] = df['NAV']
-    # df['BERÄKNAT_SUBSTANSVÄRDE'] = df['CALCULATED_NAV']
-    # df['PRIS'] = df['PRICE']
-    # df['Index Value'] = df['INDEX_VALUE']
-    # df['Avkastning OMXS#='] = df['RETURN_OMXS']
-    
     
     df = df.rename(columns={
     'BERÄKNAT_SUBSTANSVÄRDE': 'CALCULATED_NAV',
@@ -73,6 +68,33 @@ def preprocess(file:str = 'Investor.csv'):
     'Avkastning OMXS#=': 'RETURN_OMXS',
     'Investor Date': 'DATE'
 })
+    
+
+
+    # Adding Volatility
+    WINDOW= 30
+    annual_rf = 0.0
+    trading_days = 252
+    df['DAILY_RETURN'] = df['PRICE'].pct_change()
+    rf_daily = (1 + annual_rf)**(1/trading_days) - 1
+    # add rolling averages
+    mean_r = df['DAILY_RETURN'].rolling(WINDOW, min_periods=5).mean()
+    std_r  = df['DAILY_RETURN'].rolling(WINDOW, min_periods=5).std()
+
+    df['VOL_30D'] = std_r * np.sqrt(trading_days)
+
+    # Adding Sharpe quotient
+    df['SHARPE_30D'] = ((mean_r - rf_daily) / std_r) * np.sqrt(trading_days)
+
+    exp_mean = df['DAILY_RETURN'].expanding(min_periods=20).mean()
+    exp_std  = df['DAILY_RETURN'].expanding(min_periods=20).std()
+
+    df['VOL_EXP']    = exp_std * np.sqrt(trading_days)
+    df['SHARPE_EXP'] = ((exp_mean - rf_daily) / exp_std) * np.sqrt(trading_days)
+    df.loc[~np.isfinite(df['SHARPE_EXP']), 'SHARPE_EXP'] = np.nan
+
+
+
     directory = os.path.dirname(filepath)  # 'data'
     base, ext = os.path.splitext(file)
 

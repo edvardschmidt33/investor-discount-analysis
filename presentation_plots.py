@@ -3,19 +3,20 @@ import matplotlib.pyplot as plt
 import os
 
 
-def presentation(file: str = 'Investor_preprocess.csv', STOCK: str = 'Investor'):
+def presentation(file: str = 'Investor_preprocess.csv', STOCK: str = 'Investor', adjusted: bool = False):
     filepath = os.path.join('data', file)
 
     df = pd.read_csv(filepath)
     # Extract the year
     df['DATE'] = pd.to_datetime(df['DATE'], errors='coerce')
     df['YEAR'] = df['DATE'].dt.year
+    discount_type = 'DISCOUNT/PREMIUM_ADJ' if adjusted else 'DISCOUNT/PREMIUM'
 
 
     # Create the scatter plot, color-coded by year
     plt.figure(figsize=(8,6))
     scatter = plt.scatter(
-        df['DISCOUNT/PREMIUM'], 
+        df[discount_type], 
         df['RETURN - OMXS'], 
         c=df['YEAR'],              # color by year
         cmap='viridis',            # color map ('plasma', 'coolwarm', etc.)
@@ -42,6 +43,6 @@ def presentation(file: str = 'Investor_preprocess.csv', STOCK: str = 'Investor')
 
 
 if __name__=='__main__':
-    presentation('Investor_preprocess.csv', 'Investor')
-    presentation('Industrivarden_vanlig2_preprocess.csv', 'Industrivärlden')
-    presentation('Latour_preprocess.csv', 'Latour')
+    presentation('Investor_preprocess.csv', 'Investor', adjusted= False)
+    presentation('Industrivarden_vanlig2_preprocess.csv', 'Industrivärlden', adjusted= False)
+    presentation('Latour_preprocess.csv', 'Latour', adjusted= False)
