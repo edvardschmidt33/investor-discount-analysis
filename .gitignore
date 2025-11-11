@@ -1,0 +1,13 @@
+/venv/
+.venv
+.env
+.DS_Store
+.vscode/
+*.exe
+__pychache__/
+*.pyc
+*.pyd
+.cache/
+tmp/
+logs/
+*cache*
