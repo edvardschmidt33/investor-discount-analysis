@@ -23,7 +23,7 @@ def RSI_n(prices: pd.Series, n: int = 14, ema: bool = False) -> pd.Series:
 
    rs = avg_gain / avg_loss.replace(0, pd.NA)
 
-   rsi = 100 - 100 / (1 + rs)
+   rsi = 100 - 100 / (1 + rs) 
    rsi = rsi.fillna(100)
 
    return rsi.clip(lower=0, upper=100)
