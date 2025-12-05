@@ -6,3 +6,5 @@ from IBindex and Nasdaq, to perform data preprocessing, pattern
 mining (FP-growth), and train classification models (buy/wait) to
 evaluate whether large discounts or premiums can help investors
 systematically outperform the broader Swedish equity market.
+
+For pre-pressesing results see figs folder. For model results of the first approach see model.ipynb, and results for the second approach pd_model.ipynb.
